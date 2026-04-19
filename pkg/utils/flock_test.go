@@ -25,7 +25,7 @@ func TestTryFLock(t *testing.T) {
 		{
 			name: "Positive",
 			args: args{
-				filename: filepath.Join(os.TempDir(), "good_flock_listener"),
+				filename: filepath.Join(t.TempDir(), "good_flock_listener"),
 			},
 			want:    &utils.FLock{Fd: 0},
 			wantErr: false,
@@ -58,11 +58,10 @@ func TestTryFLock(t *testing.T) {
 }
 
 func TestFLock_Unlock(t *testing.T) {
-	f, err := os.CreateTemp("", "flock-test")
+	f, err := os.CreateTemp(t.TempDir(), "flock-test")
 	if err != nil {
 		t.Error(err)
 	}
-	defer os.Remove(f.Name())
 	defer f.Close()
 
 	var maxInt uintptr
